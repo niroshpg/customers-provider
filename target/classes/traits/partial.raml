@@ -1,0 +1,8 @@
+#%RAML 1.0 Trait
+usage: Apply when only specified feilds of the resource is required
+queryParameters:
+  fields?:
+    type: string
+    description: |
+      Comma-separated expressions to be used to select attributes of the response.
+    example: $.lastName, $.firstName

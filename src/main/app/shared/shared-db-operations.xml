@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:mongo="http://www.mulesoft.org/schema/mule/mongo" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/mongo http://www.mulesoft.org/schema/mule/mongo/current/mule-mongo.xsd">
+    <sub-flow name="shared-db-operations-query-all-Sub_Flow">
+        <logger message="query all from #[flowVars.collectionName]" level="INFO" doc:name="Logger"/>  
+        <mongo:find-objects config-ref="Mongo_DB" collection="#[flowVars.collectionName]" limit="#[flowVars.limit]" numToSkip="#[flowVars.limit]" doc:name="Mongo DB"/>
+        <set-payload value="#[payload]" doc:name="Set Payload"/>
+         <logger message="query all from #[flowVars.collectionName] completed" level="INFO" doc:name="Logger"/> 
+    </sub-flow>
+    
+    <sub-flow name="shared-db-operations-find-record-Sub_Flow">
+        <logger message="query all from #[flowVars.collectionName]" level="INFO" doc:name="Logger"/>
+        <mongo:find-one-object-using-query-map config-ref="Mongo_DB" collection="#[flowVars.collectionName]" doc:name="Mongo DB">
+            <mongo:query-attributes ref="_id == #[flowVars.id]"/>
+        </mongo:find-one-object-using-query-map>
+        <set-payload value="#[payload]" doc:name="Set Payload"/>
+         <logger message="query all from #[flowVars.collectionName] completed" level="INFO" doc:name="Logger"/> 
+    </sub-flow>
+    
+     <sub-flow name="shared-db-operations-insert-record-Sub_Flow">
+        <logger message="query all from #[flowVars.collectionName]" level="INFO" doc:name="Logger Start"/>
+        <flow-ref name="shared-db-operations-find-record-Sub_Flow" doc:name="Find exisiting record"/>
+        <choice doc:name="Choice">
+            <when expression="payload == null">
+                <mongo:find-objects config-ref="Mongo_DB" collection="#[flowVars.collectionName]" limit="#[flowVars.limit]" numToSkip="#[flowVars.limit]" doc:name="Mongo DB Insert Record"/>
+                <set-payload value="{ &quot;id&quot; : &quot;#[payload._id]&quot; }" doc:name="Set Payload"/>
+            </when>
+            <otherwise>
+                <set-payload doc:name="Set Payload" value="{ &quot;id&quot; : &quot;#[payload._id]&quot;, &quot;message&quot; : &quot;already exist&quot; }"/>
+            </otherwise>
+        </choice>
+        <logger message="insert record  #[flowVars.collectionName]  completed" level="INFO" doc:name="Logger End"/>
+ 
+    </sub-flow>
+</mule>

@@ -1,0 +1,51 @@
+#%RAML 1.0 ResourceType
+
+usage: Apply this resource type to any resource that returns single item of a collection
+
+uses:
+  traits: ../traits/traits.raml
+
+description: Single item of the collection of <<resourcePathName>>
+get:
+  is: [ traits.versioned]
+  description: |
+    Retrieve the specified <<resourcePathName>>
+  responses:
+    200:
+      description: |
+        Succesfully retrieved <<resourcePathName>>
+      body:
+        application/json:
+          example: |
+            <<get-response-example>>
+patch:
+  is: [ traits.versioned ]
+  description: |
+    Update a field of a <<resourcePathName>>
+  body:
+    application/json:
+      example: |
+        <<patch-request-example>>
+  responses:
+    204:
+      description: Succesfully updated <<resourcePathName>>
+put:
+  is: [ traits.versioned ]
+  description: |
+    Update an existing r<<resourcePathName>>
+  body:
+    application/json:
+      example: |
+        <<put-request-example>>
+  responses:
+    204:
+      description: |
+        Succesfully updated the resource
+delete:
+  is: [ traits.versioned ]
+  description: |
+    Delete resource
+  responses:
+    204:
+      description: |
+        Succesfully deleted resource

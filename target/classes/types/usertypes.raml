@@ -1,0 +1,35 @@
+#%RAML 1.0 Library
+usage: Data types  for Customer API
+
+types:
+  Address:
+    type: object
+    properties:
+      line1: string
+      line2?: string
+      suburb: string
+      state: string
+      postalCode: integer
+      country: string
+
+  NewCustomer:
+    properties:
+      firstName: string
+      lastName: string
+      addressess: Address[]
+
+  Customer:
+      type: object
+      properties:
+        firstName: string
+        lastName: string
+        addressess:
+          type: Address[]
+
+  PatchCustomer:
+    type: object
+    properties:
+      firstName?: string
+      lastName?: string
+      addressess?:
+        type: Address[]

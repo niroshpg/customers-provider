@@ -1,0 +1,26 @@
+#%RAML 1.0
+---
+title: Customers API
+baseUri: http://localhost/{version}
+version: v1
+mediaType: application/json
+
+uses:
+    usertypes:      types/usertypes.raml
+
+resourceTypes:
+  collection:       !include resourceTypes/collection.raml
+  collection-item:  !include resourceTypes/collection-item.raml
+
+/customers:
+  type:
+    collection:
+      request-example: !include examples/post-customer.json
+      response-example: !include examples/get-customers.json
+
+  /{customer_id}:
+    type:
+      collection-item:
+        get-response-example: !include examples/get-customer.json
+        patch-request-example: !include examples/patch-customer.json
+        put-request-example: !include examples/put-customer.json

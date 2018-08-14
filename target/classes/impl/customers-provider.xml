@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:mongo="http://www.mulesoft.org/schema/mule/mongo"
+	xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mongo http://www.mulesoft.org/schema/mule/mongo/current/mule-mongo.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
+    <sub-flow name="customers-provider-get-custmersSub_Flow">
+        <set-variable doc:name="Variable" value="${mongodb.customers.collection}" variableName="collectionName"/>
+        <set-payload value="#[message.inboundProperties.'http.query.params']" doc:name="Set Payload"/>
+        <flow-ref name="shared-db-operations-query-all-Sub_Flow" doc:name="shared-db-operations-query-all-Sub_Flow"/>
+        <object-to-string-transformer doc:name="Object to String"/>
+        <set-payload value="#[payload]" doc:name="Set Payload"/>
+        
+    </sub-flow>
+    <sub-flow name="customers-provider-patch-customerSub_Flow">
+        <logger level="INFO" doc:name="Logger"/>
+    </sub-flow>
+    <sub-flow name="customers-provider-delete-customerSub_Flow">
+        <logger level="INFO" doc:name="Logger"/>
+    </sub-flow>
+    <sub-flow name="customers-provider-get-customerSub_Flow">
+        <logger level="INFO" doc:name="Logger"/>
+    </sub-flow>
+    <sub-flow name="customers-provider-update-customerSub_Flow">
+        <logger level="INFO" doc:name="Logger"/>
+    </sub-flow>
+    <sub-flow name="customers-provider-create-customerSub_Flow">
+        <set-variable doc:name="Variable" value="${mongodb.customers.collection}" variableName="collectionName"/>
+        <set-payload value="#[message.inboundProperties.'http.query.params']" doc:name="Set Payload"/>
+        <flow-ref name="shared-db-operations-insert-record-Sub_Flow" doc:name="shared-db-operations-query-all-Sub_Flow"/>
+        <object-to-string-transformer doc:name="Object to String"/>
+        <set-payload value="#[payload]" doc:name="Set Payload"/>
+ 
+    </sub-flow>
+</mule>

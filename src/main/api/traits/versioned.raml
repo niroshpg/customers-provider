@@ -1,0 +1,32 @@
+#%RAML 1.0 Trait
+usage: Apply this trait to GET only if the resource is modified from the server side
+headers:
+  If-None-Match?:
+    type: string
+    description: |
+      If specified reutrn response only if the resource is in a different version(ETag)
+      If the resource has not been modified (same version),
+      then HTTP status code '304 Not Modified' (with empty body)
+      will be returned instead of the actual resource.
+    example: 8b8405f6-b3e6-41a0-9f72-d7a283001a09
+responses:
+  200:
+    description: |
+      The resource has been modified. The body contains the new resource.
+    headers:
+      ETag:
+        description: |
+          The latest version of the resource
+          Use this to request resource only when it has changed since last received
+        type: string
+        example: adcab6f4-0086-4966-829a-d986a2c76aa2
+  304:
+    description: |
+      The resource has not been modified, the body is empty and the version cached by the API
+      consumer client may be used.
+    headers:
+      ETag:
+        description: |
+          The current version of the resource
+        type: string
+        example: 8b8405f6-b3e6-41a0-9f72-d7a283001a09

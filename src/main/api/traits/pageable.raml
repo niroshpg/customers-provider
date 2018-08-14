@@ -1,0 +1,18 @@
+#%RAML 1.0 Trait
+usage: Use this trait to add pagging support
+queryParameters:
+  offset?:
+    type: integer
+    default: 0
+    minimum: 0
+    description: The first entry to return from a collection.
+  limit?:
+    type: integer
+    default: 50
+    minimum: 1
+    description: The limit of the number of entries returned.
+  page?:
+    type: integer
+    default: 1
+    minimum: 1
+    description: The page of results to return.
